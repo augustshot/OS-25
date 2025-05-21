@@ -382,7 +382,7 @@ clean:
 ***
 
 ## <a id="lab2">Лабораторная работа №2</a>
-### Установка Arch Linux
+### Установка Arch Linux (выполнялась совместно с [Totodor](https://github.com/Totodor))
 Установка производилась по шагам из [wiki](https://wiki.archlinux.org/title/Install_Arch_Linux_from_existing_Linux "Install Arch Linux from existing Linux"), а также с помощью [гайда](https://github.com/dydojopka/ArchLinux-Bootstrap-Guide), созданного моим коллегой. 😉
 
 Запись процесса установки доступна по [ссылке](https://drive.google.com/file/d/1Zt1fB4W3O8ubAOsCFvV-k286qIU7SWgn/view?usp=sharing):
