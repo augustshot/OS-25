@@ -15,7 +15,7 @@
 ***
 
 ## <a id="lab1">Лабораторная работа №1</a>
-### Исследование компилятора gcc, язык ассемблера. Связь процесса и операционной системы. Makefile, git.
+### Исследование компилятора gcc, язык ассемблера, cвязь процесса и операционной системы, makefile, git
 
 Код программы вычисления факториала ([factorial.cpp](/lab1/factorial.cpp)):
 
@@ -392,6 +392,67 @@ clean:
 Для более удобного выполнения лабораторной работы №3 (и эстетической составляющей) также [был установлен](https://drive.google.com/file/d/1xrcM-wCmhnf60ltXFw6ly6FGt_5XduXi/view?usp=sharing) графический интерфейс Gnome:
 
 [![gnome install](http://d.zaix.ru/NjNh.png)](https://drive.google.com/file/d/1xrcM-wCmhnf60ltXFw6ly6FGt_5XduXi/view?usp=sharing)
+
+###### P.S.: процесс установки был произведен аж 3 раза:
+###### - тренировочная установка
+###### - установка под запись... в которой запись велась не на том окне
+###### - финальная удачная установка под запись
 ***
 ## <a id="lab3">Лабораторная работа №3</a>
+### Реализация скрипта bash
+Для выполнения лабораторной работы №3 было выбрано следующее задание:
+> 1. Скопировать все изображения в папку резервного хранения.
 
+[bash-скрипт](/lab3/backup.sh):
+```
+#!/bin/bash
+
+# проверка аргументов
+if [ "$#" -eq 0 ]; then
+    source_dir="."
+elif [ "$#" -eq 1 ]; then
+    source_dir="$1"
+else
+    echo "Ошибка: Неверное количество аргументов" >&2
+    echo "Использование: $0 [исходная_папка]" >&2
+    exit 1
+fi
+
+# проверка существования исходной директории
+if [ ! -d "$source_dir" ]; then
+    echo "Ошибка: Директория '$source_dir' не существует" >&2
+    exit 2
+fi
+
+# определение папки, в которую будет производиться копирование
+backup_dir="image_backup_$(date +%Y%m%d_%H%M%S)"
+mkdir -p "$backup_dir" || {
+    echo "Ошибка: Невозможно создать папку $backup_dir" >&2
+    exit 3
+}
+
+# поиск и копирование файлов
+formats=("*.jpg" "*.jpeg" "*.jp2" "*.png" "*.gif" "*.bmp" "*.webp")
+echo "Поиск изображений в: $(realpath "$source_dir")"
+base_dir=$(realpath "$source_dir")
+
+find "$source_dir" -type f \( -name "${formats[0]}" \
+    $(printf -- "-o -name %s " "${formats[@]:1}") \) \
+    -exec sh -c '
+        file="$1"
+        rel_path=$(realpath --relative-to="$2" "$file")
+        mkdir -p "$3/$(dirname "$rel_path")"
+        cp "$file" "$3/$rel_path"
+    ' sh {} "$base_dir" "$backup_dir" \;
+
+# проверка результата
+count=$(find "$backup_dir" -type f | wc -l)
+echo "Резервное копирование завершено!"
+echo "Скопировано файлов: $count"
+echo "Резервная копия доступна в: $(realpath "$backup_dir")"
+```
+
+Для проверки с помощью общих папок VirtualBox 3 изображения были перенесены в /home/images, а затем с помощью программы скопированы в папку резервного копирования, созданную в директории самого скрипта:
+![backup](http://d.zaix.ru/NkbG.png)
+На скриншоте видны исходная и конечная папки, а также необходимая команда в консоли: 
+```bash backup.sh /home/images/ ```
