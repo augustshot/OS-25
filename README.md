@@ -222,7 +222,7 @@ int factorial(int n);
 ```
 
 #### src/factorial.cpp:
-```
+```cpp
 #include "factorial.h"
 
 int factorial(int n){
@@ -230,7 +230,7 @@ int factorial(int n){
 }
 ```
 #### src/main.cpp:
-```
+```cpp
 #include <iostream>
 #include "factorial.h"
 using namespace std;
@@ -290,7 +290,7 @@ factorial_better/
 ```
 
 #### include/shared.h:
-```
+```cpp
 #ifndef SHARED_H
 #define SHARED_H
 
@@ -309,7 +309,7 @@ void cleanup_shared_memory(SharedData* shared, const char* name);
 ```
 
 #### src/main.cpp:
-```
+```cpp
 #include <iostream>
 #include <sys/wait.h>
 #include "factorial.h"
@@ -349,7 +349,7 @@ int main() {
 }
 ```
 #### Makefile:
-```
+``` Makefile
 # Компилятор и флаги
 CXX := g++
 CXXFLAGS := -std=c++11 -Wall -Wextra -Iinclude 
